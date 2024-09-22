@@ -1,0 +1,49 @@
+server:
+  port: 23001
+  shutdown: graceful
+
+spring:
+  profiles:
+    active: local
+    group:
+      local:
+        - console-logging # 콘솔 로깅만 사용
+      test:
+        - console-logging
+      prod:
+        - console-logging
+        - console-logging
+    include:
+      - console-logging
+  application:
+    name: broker
+  kafka:
+    producer:
+      properties:
+        min:
+          insync:
+            replicas: 2
+  data:
+    redis:
+      host: 192.168.0.3
+      port: 6379
+
+kafka:
+  bootstrapAddress: 192.168.0.3:6687
+  admin:
+    properties:
+  topic:
+    alarm:
+      name: lawgg-alert
+      replicationFactor: 1
+      numPartitions: 1
+  consumer:
+    alarm:
+      rdb-group-id: createAlarmInRDB
+      redis-group-id: publishInRedis
+    autoOffsetResetConfig: latest
+  producer:
+    acksConfig: all
+    retry: 3
+    enable-idempotence: true
+    max-in-flight-requests-per-connection: 3
