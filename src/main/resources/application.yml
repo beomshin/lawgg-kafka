@@ -3,6 +3,11 @@ server:
   shutdown: graceful
 
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.6:3306/test?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    username: root
+    password: root12
   profiles:
     active: local
     group:
@@ -25,8 +30,10 @@ spring:
             replicas: 2
   data:
     redis:
-      host: 192.168.0.3
-      port: 6379
+      cluster:
+        max-redirects: 3
+        connect-ip: 192.168.0.7
+        nodes: 192.168.0.7:7000, 192.168.0.7:7001, 192.168.0.7:7002, 192.168.0.7:7003, 192.168.0.7:7004, 192.168.0.7:7005
 
 kafka:
   bootstrapAddress: 192.168.0.3:6687
